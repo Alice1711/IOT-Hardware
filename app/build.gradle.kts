@@ -45,4 +45,5 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.google.firebase.analytics)
+    implementation(kotlin("script-runtime"))
 }
