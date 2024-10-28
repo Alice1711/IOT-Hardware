@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lay_item_vihecle_off"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/item2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp">
+
+        <RelativeLayout
+            android:id="@+id/reLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                app:cardCornerRadius="50dp">
+
+                <ImageView
+                    android:id="@+id/imgVehicle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/nvx_gray_green" />
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@+id/cardView2"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/nameCustomer2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:text="Thủy Tiên "
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/imgStatusOff"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/img_status_offline" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_StatusOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical"
+                    android:text="Offline"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>
