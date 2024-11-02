@@ -2,7 +2,7 @@ package com.example.rentwise.ModelData;
 
 import java.util.Date;
 
-public class Rent {
+public class Transaction {
 
     private String id_rent;
     private String idCustomer;
@@ -11,7 +11,7 @@ public class Rent {
     private Date endDay;
     private String zoneRent;
 
-    public Rent(String id_rent, String idCustomer, String idMotobike, Date startDay, Date endDay, String zoneRent) {
+    public Transaction(String id_rent, String idCustomer, String idMotobike, Date startDay, Date endDay, String zoneRent) {
         this.id_rent = id_rent;
         this.idCustomer = idCustomer;
         this.idMotobike = idMotobike;
