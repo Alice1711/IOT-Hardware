@@ -6,6 +6,9 @@ public class GPS {
     private String latitude;
     private String longtitude;
 
+    public GPS() {
+    }
+
     public GPS(String idVehivcle, String latitude, String longtitude) {
         this.idVehivcle = idVehivcle;
         this.latitude = latitude;
