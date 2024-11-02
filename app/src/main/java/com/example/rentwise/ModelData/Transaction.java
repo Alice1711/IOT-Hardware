@@ -1,5 +1,7 @@
 package com.example.rentwise.ModelData;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Transaction {
@@ -7,11 +9,13 @@ public class Transaction {
     private String id_rent;
     private String idCustomer;
     private String idMotobike;
-    private Date startDay;
-    private Date endDay;
+    private String startDay;
+    private String endDay;
     private String zoneRent;
 
-    public Transaction(String id_rent, String idCustomer, String idMotobike, Date startDay, Date endDay, String zoneRent) {
+    public Transaction() {}
+
+    public Transaction(String id_rent, String idCustomer, String idMotobike, String startDay, String endDay, String zoneRent) {
         this.id_rent = id_rent;
         this.idCustomer = idCustomer;
         this.idMotobike = idMotobike;
@@ -44,19 +48,19 @@ public class Transaction {
         this.idMotobike = idMotobike;
     }
 
-    public Date getStartDay() {
+    public String getStartDay() {
         return startDay;
     }
 
-    public void setStartDay(Date startDay) {
+    public void setStartDay(String startDay) {
         this.startDay = startDay;
     }
 
-    public Date getEndDay() {
+    public String getEndDay() {
         return endDay;
     }
 
-    public void setEndDay(Date endDay) {
+    public void setEndDay(String endDay) {
         this.endDay = endDay;
     }
 
@@ -66,5 +70,13 @@ public class Transaction {
 
     public void setZoneRent(String zoneRent) {
         this.zoneRent = zoneRent;
+    }
+
+    public Date getStartDayAsDate() throws ParseException {
+        return new SimpleDateFormat("dd/MM/yyyy").parse(this.startDay);
+    }
+
+    public Date getEndDayAsDate() throws ParseException {
+        return new SimpleDateFormat("dd/MM/yyyy").parse(this.endDay);
     }
 }

@@ -7,6 +7,9 @@ public class Customer {
     private String name;
     private String gender;
 
+    public Customer() {
+    }
+
     public Customer(String cccd, String phoneNumber, String name, String gender) {
         this.cccd = cccd;
         this.phoneNumber = phoneNumber;

@@ -7,6 +7,8 @@ public class Motobike {
     private String picture;
     private String status;
 
+    public Motobike() {}
+
     public Motobike(String numberPlate, String name, String picture, String status) {
         this.numberPlate = numberPlate;
         this.name = name;

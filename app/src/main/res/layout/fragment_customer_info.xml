@@ -6,13 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.CustomerInfoFragment">
 
-    <?xml version="1.0" encoding="utf-8"?>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_create"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/container_create"
         android:gravity="left|top"
         android:orientation="vertical">
 
@@ -54,7 +51,6 @@
             android:layout_gravity="left"
             android:layout_marginTop="32dp"
             android:layout_weight="1"
-            android:background="@drawable/container_detail_customer"
             android:gravity="left|top"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -107,8 +103,6 @@
 
         </LinearLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </FrameLayout>
