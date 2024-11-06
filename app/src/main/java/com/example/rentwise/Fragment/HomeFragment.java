@@ -1,31 +1,31 @@
 package com.example.rentwise.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.rentwise.CustomerInfo;
+import com.example.rentwise.ManageVehicle;
 
 import com.example.rentwise.R;
 
-
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public HomeFragment() {
-        // Required empty public constructor
-    }
 
+    }
 
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
@@ -45,10 +45,28 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // Find cardInputInfo and set an OnClickListener
+        LinearLayout cardInputInfo = view.findViewById(R.id.cardInputInfo);
+        LinearLayout cardManageVehicle = view.findViewById(R.id.cardManageVehicle);
+
+        cardInputInfo.setOnClickListener(v -> {
+            // Start InfoActivity when cardInputInfo is clicked
+            Intent intent = new Intent(getActivity(), CustomerInfo.class);
+            startActivity(intent);
+        });
+
+        cardManageVehicle.setOnClickListener(v ->{
+            Intent intent = new Intent(getActivity(), ManageVehicle.class);
+            startActivity(intent);
+        });
+
+        return view;
     }
 }
