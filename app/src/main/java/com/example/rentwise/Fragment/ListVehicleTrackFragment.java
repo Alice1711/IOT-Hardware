@@ -166,7 +166,7 @@ public class ListVehicleTrackFragment extends BottomSheetDialogFragment {
             Motobike matchedMotobike = null;
 
             for (GPS gps : gpsList) {
-                if (gps.getIdVehivcle().equals(transaction.getIdMotobike())) {
+                if (gps.getIdVehicle().equals(transaction.getIdMotobike())) {
                     matchedGps = gps;
                     break;
                 }

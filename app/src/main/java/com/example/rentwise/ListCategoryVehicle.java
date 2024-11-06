@@ -33,6 +33,7 @@ public class ListCategoryVehicle extends AppCompatActivity {
 
         tvEmptyMessage = findViewById(R.id.tv_empty_message);
 
+        btnBackCategory = findViewById(R.id.btnBackCategory);
         btnBackCategory.setOnClickListener(v -> finish());
 
         loadData();

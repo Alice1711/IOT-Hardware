@@ -3,6 +3,7 @@ package com.example.rentwise;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentwise.Fragment.ButtonsUpdateFragment;
 import com.example.rentwise.ModelData.FirebaseRepository;
 import com.example.rentwise.ModelData.Motobike;
 
@@ -23,6 +25,7 @@ public class ManageVehicle extends AppCompatActivity {
     private MyAdapter<Motobike> adapter;
     private TextView tvEmptyMessage;
     private ImageButton btnBackManage;
+    private Button btnUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,13 @@ public class ManageVehicle extends AppCompatActivity {
 
         tvEmptyMessage = findViewById(R.id.tv_empty_message2);
         btnBackManage = findViewById(R.id.btnBackManage);
+        btnUpdate = findViewById(R.id.btnUpdate);
+
+        btnUpdate.setOnClickListener(v -> {
+            ButtonsUpdateFragment bottomSheet = ButtonsUpdateFragment.newInstance("param1", "param2");
+            bottomSheet.show(getSupportFragmentManager(), "ButtonsUpdateFragment");
+        });
+
 
         btnBackManage.setOnClickListener(v -> finish());
 
