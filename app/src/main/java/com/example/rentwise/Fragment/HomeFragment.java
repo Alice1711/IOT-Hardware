@@ -11,12 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.rentwise.CustomerInfo;
 import com.example.rentwise.ManageCustomer;
+import com.example.rentwise.ManageTransaction;
 import com.example.rentwise.ManageVehicle;
 
 import com.example.rentwise.R;
-import com.example.rentwise.TransactionInfo;
 
 public class HomeFragment extends Fragment {
 
@@ -61,7 +60,7 @@ public class HomeFragment extends Fragment {
 
         cardInputInfo.setOnClickListener(v -> {
             // Start InfoActivity when cardInputInfo is clicked
-            Intent intent = new Intent(getActivity(), TransactionInfo.class);
+            Intent intent = new Intent(getActivity(), ManageTransaction.class);
             startActivity(intent);
         });
 

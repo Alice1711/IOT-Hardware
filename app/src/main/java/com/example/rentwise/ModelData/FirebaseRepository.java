@@ -22,6 +22,10 @@ public class FirebaseRepository<T> {
         this.modelClass = modelClass;
     }
 
+    public DatabaseReference getReference() {
+        return reference;
+    }
+
     public void save(String key, T data, OnOperationListener listener) {
         reference.child(key).setValue(data).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

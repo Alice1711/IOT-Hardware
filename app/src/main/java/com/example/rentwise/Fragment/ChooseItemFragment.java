@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -153,10 +154,11 @@ public class ChooseItemFragment extends BottomSheetDialogFragment {
     }
 
     private void onItemSelected(Object selectedItem) {
-        if (getActivity() instanceof OnItemSelectedListener) {
-            ((OnItemSelectedListener) getActivity()).onItemSelected(selectedItem);
+        Fragment targetFragment = getTargetFragment();
+        if (targetFragment instanceof OnItemSelectedListener) {
+            ((OnItemSelectedListener) targetFragment).onItemSelected(selectedItem);
         }
-        dismiss();
+        dismiss(); // Close the BottomSheetDialogFragment after selection
     }
 
     public interface OnItemSelectedListener {

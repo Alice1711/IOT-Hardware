@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vehicleInfoFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/container_homepage"
@@ -222,7 +223,7 @@
             </ScrollView>
 
             <Button
-                android:id="@+id/btnContinue3"
+                android:id="@+id/btnAdd3"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="16dp"
@@ -231,7 +232,7 @@
                 android:layout_marginBottom="32dp"
                 android:backgroundTint="#30E6C1"
                 android:fontFamily="@font/nunito_extrabold"
-                android:text="Lưu"
+                android:text="Thêm"
                 android:textSize="20sp"
                 app:cornerRadius="20dp" />
 

@@ -19,10 +19,13 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".ManageTransaction"
+            android:exported="false" />
+        <activity
             android:name=".ManageCustomer"
             android:exported="false" />
         <activity
-            android:name=".TransactionInfo"
+            android:name=".Fragment.TransactionInfoFragment"
             android:exported="false" />
         <activity
             android:name=".CustomerInfo"
@@ -42,7 +45,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SetProfile"
             android:exported="true" />
@@ -62,12 +64,11 @@
         </activity>
         <activity
             android:name=".Login"
-            android:exported="true" />
+            android:exported="true"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAbR-Sn1Rd4sdTormHnFHrg1ZAoNFH05Hw" />

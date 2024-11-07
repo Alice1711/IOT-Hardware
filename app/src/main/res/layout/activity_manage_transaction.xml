@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/container_homepage"
-    tools:context=".ManageVehicle">
+    tools:context=".ManageTransaction">
 
     <LinearLayout
         android:id="@+id/topbarManage"
@@ -20,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/btnBackManage"
+            android:id="@+id/btnBackManageTran"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -35,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Quản lý danh sách xe"
+            android:text="Quản lý danh sách thuê"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
@@ -62,17 +61,16 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_bold"
                 android:gravity="center_vertical"
-                android:text="Danh sách xe"
+                android:text="Danh sách giao dịch"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/btnAddVehicle"
+                android:id="@+id/btnAddTran"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#F5F5F5"
@@ -95,7 +93,7 @@
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewVehicleList"
+            android:id="@+id/recyclerViewTransactionList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
@@ -103,5 +101,4 @@
             android:background="@android:color/transparent"
             android:scrollbars="vertical" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

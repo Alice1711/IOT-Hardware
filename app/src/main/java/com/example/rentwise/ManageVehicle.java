@@ -7,13 +7,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rentwise.Fragment.ButtonsUpdateFragment;
+import com.example.rentwise.Fragment.VehicleDetailFragment;
+import com.example.rentwise.Fragment.VehicleInfoFragment;
 import com.example.rentwise.ModelData.FirebaseRepository;
 import com.example.rentwise.ModelData.Motobike;
 
@@ -25,7 +28,7 @@ public class ManageVehicle extends AppCompatActivity {
     private MyAdapter<Motobike> adapter;
     private TextView tvEmptyMessage;
     private ImageButton btnBackManage;
-    private Button btnUpdate;
+    private Button btnAddVehicle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +41,32 @@ public class ManageVehicle extends AppCompatActivity {
 
         tvEmptyMessage = findViewById(R.id.tv_empty_message2);
         btnBackManage = findViewById(R.id.btnBackManage);
-        btnUpdate = findViewById(R.id.btnUpdate);
+        btnAddVehicle = findViewById(R.id.btnAddVehicle);
 
-        btnUpdate.setOnClickListener(v -> {
-            ButtonsUpdateFragment bottomSheet = ButtonsUpdateFragment.newInstance("param1", "param2");
-            bottomSheet.show(getSupportFragmentManager(), "ButtonsUpdateFragment");
-        });
-
-
+        btnAddVehicle.setOnClickListener(v -> openVehicleInfoFragment());
         btnBackManage.setOnClickListener(v -> finish());
 
         loadData();
+
+        // Listen for result from VehicleInfoFragment
+        getSupportFragmentManager().setFragmentResultListener("requestKey", this, (requestKey, result) -> {
+            if (result.getBoolean("dataUpdated")) {
+                loadData(); // Reload data when a new vehicle is added
+            }
+        });
+
+        getSupportFragmentManager().setFragmentResultListener("vehicleUpdated", this, (requestKey, result) -> loadData());
+
+        // Listen for vehicle deletion event
+        getSupportFragmentManager().setFragmentResultListener("vehicleDeleted", this, (requestKey, result) -> loadData());
+    }
+
+    private void openVehicleInfoFragment() {
+        VehicleInfoFragment vehicleInfoFragment = new VehicleInfoFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main, vehicleInfoFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void loadData() {
@@ -62,13 +80,14 @@ public class ManageVehicle extends AppCompatActivity {
                 } else {
                     tvEmptyMessage.setVisibility(View.GONE);
                     recyclerViewVehicleList.setVisibility(View.VISIBLE);
-                    setupRecyclerView(data);  // Truyền toàn bộ danh sách vào setupRecyclerView
+                    setupRecyclerView(data);
                 }
             }
 
             @Override
             public void onFailure(String message) {
                 Log.e("ManageVehicle", "Failed to fetch data: " + message);
+                Toast.makeText(ManageVehicle.this, "Error fetching data", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -79,24 +98,38 @@ public class ManageVehicle extends AppCompatActivity {
             public void bind(View itemView, Motobike motobike) {
                 TextView nameTextView = itemView.findViewById(R.id.nameCustomer);
                 TextView statusTextView = itemView.findViewById(R.id.tv_StatusOn);
-                TextView locationCustomerTextView = itemView.findViewById(R.id.locationCustomer); // Thêm TextView này
+                TextView locationCustomerTextView = itemView.findViewById(R.id.locationCustomer);
                 ImageView statusIcon = itemView.findViewById(R.id.imgStatusOn);
 
-                // Đặt tên và số biển số xe
                 nameTextView.setText(motobike.getName());
                 statusTextView.setText(motobike.getNumberPlate());
 
-                // Đặt trạng thái hoạt động hoặc không hoạt động
                 if ("Online".equalsIgnoreCase(motobike.getStatus())) {
                     statusIcon.setImageResource(R.drawable.img_status_online);
-                    locationCustomerTextView.setText("Trạng thái: đang hoạt động"); // Trạng thái đang hoạt động
+                    locationCustomerTextView.setText("Trạng thái: đang hoạt động");
                 } else {
                     statusIcon.setImageResource(R.drawable.img_status_offline);
-                    locationCustomerTextView.setText("Trạng thái: không hoạt động"); // Trạng thái không hoạt động
+                    locationCustomerTextView.setText("Trạng thái: không hoạt động");
                 }
+
+                itemView.setOnClickListener(v -> openVehicleDetailFragment(motobike));
             }
         });
 
         recyclerViewVehicleList.setAdapter(adapter);
     }
+
+    private void openVehicleDetailFragment(Motobike motobike) {
+        VehicleDetailFragment vehicleDetailFragment = VehicleDetailFragment.newInstance(
+                motobike.getName(),
+                motobike.getNumberPlate(),
+                motobike.getPicture(),
+                motobike.getStatus(),
+                motobike.getPrice()
+        );
+
+        // Show the bottom sheet dialog
+        vehicleDetailFragment.show(getSupportFragmentManager(), "VehicleDetailFragment");
+    }
 }
+
