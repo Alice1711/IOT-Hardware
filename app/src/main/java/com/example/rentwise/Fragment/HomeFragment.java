@@ -12,9 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.rentwise.CustomerInfo;
+import com.example.rentwise.ManageCustomer;
 import com.example.rentwise.ManageVehicle;
 
 import com.example.rentwise.R;
+import com.example.rentwise.TransactionInfo;
 
 public class HomeFragment extends Fragment {
 
@@ -55,10 +57,17 @@ public class HomeFragment extends Fragment {
         // Find cardInputInfo and set an OnClickListener
         LinearLayout cardInputInfo = view.findViewById(R.id.cardInputInfo);
         LinearLayout cardManageVehicle = view.findViewById(R.id.cardManageVehicle);
+        LinearLayout cardInputInfoCus = view.findViewById(R.id.cardInputInfoCus);
 
         cardInputInfo.setOnClickListener(v -> {
             // Start InfoActivity when cardInputInfo is clicked
-            Intent intent = new Intent(getActivity(), CustomerInfo.class);
+            Intent intent = new Intent(getActivity(), TransactionInfo.class);
+            startActivity(intent);
+        });
+
+        cardInputInfoCus.setOnClickListener(v -> {
+            // Start InfoActivity when cardInputInfo is clicked
+            Intent intent = new Intent(getActivity(), ManageCustomer.class);
             startActivity(intent);
         });
 

@@ -2,10 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/container_homepage"
-    tools:context=".Fragment.VehicleInfoFragment">
+    tools:context=".TransactionInfo">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/topbar3"
+            android:id="@+id/topbar4"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@drawable/drawable_shape_topbar"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:id="@+id/btnBackVehicleInfo"
+                android:id="@+id/btnBackCustomerInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -36,7 +36,7 @@
                 android:src="@drawable/baseline_arrow_back_ios_new_24" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_bold"
@@ -59,7 +59,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topbar3"
+            app:layout_constraintTop_toBottomOf="@+id/topbar4"
             app:layout_constraintVertical_bias="1.0">
 
             <TextView
@@ -74,7 +74,7 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="Thông tin xe"
+                android:text="Tạo giao dịch mới"
                 android:textSize="30sp" />
 
             <ScrollView
@@ -88,7 +88,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
@@ -105,16 +105,49 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="Biển số xe"
+                            android:text="Mã khách hàng"
                             android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/edtNumPlate"
+                            android:id="@+id/edtCusId2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:autofillHints=""
                             android:background="@drawable/btn_bg_white"
+                            android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                            android:elevation="4dp"
+                            android:ems="10"
+                            android:hint="Nhập CCCD"
+                            android:inputType="text"
+                            android:minHeight="50dp"
+                            android:padding="10dp"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Xe cho thuê"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/edtVehId"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autofillHints=""
+                            android:background="@drawable/btn_bg_white"
+                            android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
                             android:elevation="4dp"
                             android:ems="10"
                             android:hint="Nhập biển số xe"
@@ -136,19 +169,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="Tên xe"
+                            android:text="Nhập ngày thuê"
                             android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/edtVehicleName"
+                            android:id="@+id/edtTranStartDay"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
                             android:autofillHints=""
                             android:background="@drawable/btn_bg_white"
+                            android:drawableEnd="@drawable/baseline_date_range_24"
                             android:elevation="4dp"
                             android:ems="10"
-                            android:hint="Nhập tên xe"
+                            android:hint="Nhập ngày thuê"
                             android:inputType="text"
                             android:minHeight="50dp"
                             android:padding="10dp"
@@ -167,19 +201,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="Giá"
+                            android:text="Nhập ngày trả"
                             android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/edtPrice"
+                            android:id="@+id/edtTranEndDay"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
                             android:autofillHints=""
                             android:background="@drawable/btn_bg_white"
+                            android:drawableEnd="@drawable/baseline_date_range_24"
                             android:elevation="4dp"
                             android:ems="10"
-                            android:hint="Nhập giá thuê"
+                            android:hint="Nhập ngày trả"
                             android:inputType="text"
                             android:minHeight="50dp"
                             android:padding="10dp"
@@ -198,31 +233,31 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="Ảnh xe (nếu có)"
+                            android:text="Khu vực thuê"
                             android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/edtPicture"
+                            android:id="@+id/edtTranZone"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
                             android:autofillHints=""
                             android:background="@drawable/btn_bg_white"
-                            android:drawableEnd="@drawable/baseline_photo_library_24"
                             android:elevation="4dp"
                             android:ems="10"
-                            android:hint="Chọn ảnh"
+                            android:hint="Nhập khu vực"
                             android:inputType="text"
                             android:minHeight="50dp"
                             android:padding="10dp"
                             android:textSize="20sp" />
+
                     </LinearLayout>
 
                 </LinearLayout>
             </ScrollView>
 
             <Button
-                android:id="@+id/btnContinue3"
+                android:id="@+id/btnSave2"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="16dp"

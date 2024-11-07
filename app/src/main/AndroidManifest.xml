@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,15 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ManageCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionInfo"
+            android:exported="false" />
         <activity
             android:name=".CustomerInfo"
             android:exported="true" />
-
         <activity
             android:name=".ManageVehicle"
             android:exported="true" />
-
         <activity
             android:name=".ListCategoryVehicle"
             android:exported="true" />
@@ -38,10 +42,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAbR-Sn1Rd4sdTormHnFHrg1ZAoNFH05Hw" />
 
         <activity
             android:name=".SetProfile"
@@ -60,14 +60,17 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-
-         <activity
-         android:name=".Login"
-         android:exported="true" />
+        <activity
+            android:name=".Login"
+            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAbR-Sn1Rd4sdTormHnFHrg1ZAoNFH05Hw" />
     </application>
 
 </manifest>

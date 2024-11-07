@@ -82,6 +82,10 @@ public class FirebaseRepository<T> {
         });
     }
 
+    public String getNewKey() {
+        return reference.push().getKey();
+    }
+
     public void getAll(OnFetchListListener<T> listener) {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
