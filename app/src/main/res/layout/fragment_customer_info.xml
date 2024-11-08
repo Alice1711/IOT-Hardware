@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/container_homepage"
-    tools:context=".CustomerInfo">
+    tools:context=".Fragment.CustomerInfoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -47,6 +46,11 @@
         </LinearLayout>
 
         <LinearLayout
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topbar2"
+            app:layout_constraintVertical_bias="1.0"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="left"
@@ -55,12 +59,7 @@
             android:background="@drawable/container_frame"
             android:elevation="2dp"
             android:gravity="left|top"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topbar2"
-            app:layout_constraintVertical_bias="1.0">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_customer_info"
@@ -224,6 +223,7 @@
 
             <Button
                 android:id="@+id/btnSave2"
+                app:cornerRadius="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="16dp"
@@ -233,11 +233,9 @@
                 android:backgroundTint="#30E6C1"
                 android:fontFamily="@font/nunito_extrabold"
                 android:text="Lưu"
-                android:textSize="20sp"
-                app:cornerRadius="20dp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>
