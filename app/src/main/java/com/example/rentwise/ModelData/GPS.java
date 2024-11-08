@@ -4,15 +4,15 @@ public class GPS {
 
     private String idVehicle;
     private String latitude;
-    private String longtitude;
+    private String longitude;
 
     public GPS() {
     }
 
-    public GPS(String idVehicle, String latitude, String longtitude) {
+    public GPS(String idVehicle, String latitude, String longitude) {
         this.idVehicle = idVehicle;
         this.latitude = latitude;
-        this.longtitude = longtitude;
+        this.longitude = longitude;
     }
 
     public String getIdVehicle() {
@@ -31,11 +31,11 @@ public class GPS {
         this.latitude = latitude;
     }
 
-    public String getLongtitude() {
-        return longtitude;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(String longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

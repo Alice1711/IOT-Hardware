@@ -91,9 +91,9 @@ public class ManageTransaction extends AppCompatActivity {
             TextView locationCustomerTextView = itemView.findViewById(R.id.locationCustomer);
             ImageView statusIcon = itemView.findViewById(R.id.imgStatusOn);
 
-            nameTextView.setText(transaction.getIdCustomer());
+            nameTextView.setText(transaction.getId_rent());
             statusTextView.setText(transaction.getIdCustomer());
-            locationCustomerTextView.setText(transaction.getEndDay());
+            locationCustomerTextView.setText(transaction.getStartDay());
 
             itemView.setOnClickListener(v -> openTransactionDetailFragment(transaction));
         });
@@ -101,7 +101,7 @@ public class ManageTransaction extends AppCompatActivity {
     }
 
     private void openTransactionDetailFragment(Transaction transaction) {
-        TransactionDetailFragment transactionDetailFragment = TransactionDetailFragment.newInstance(
+        TransactionDetailFragment transactionDetailFragment = TransactionDetailFragment.newInstance( transaction.getId_rent(),
                 transaction.getIdCustomer(), transaction.getIdMotobike(), transaction.getStartDay(), transaction.getEndDay(), transaction.getZoneRent()
         );
 

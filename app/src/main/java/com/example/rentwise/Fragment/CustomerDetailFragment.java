@@ -1,49 +1,49 @@
 package com.example.rentwise.Fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
+import com.example.rentwise.ModelData.Customer;
+import com.example.rentwise.ModelData.FirebaseRepository;
 import com.example.rentwise.R;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CustomerDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CustomerDetailFragment extends Fragment {
+import java.util.HashMap;
+import java.util.Map;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class CustomerDetailFragment extends BottomSheetDialogFragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String ARG_CCCD = "cccd";
+    private static final String ARG_NAME = "name";
+    private static final String ARG_GENDER = "gender";
+    private static final String ARG_PHONE = "phone";
 
-    public CustomerDetailFragment() {
-        // Required empty public constructor
-    }
+    private String cccd;
+    private String name;
+    private String gender;
+    private String phone;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CustomerDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CustomerDetailFragment newInstance(String param1, String param2) {
+    private FirebaseRepository<Customer> repository;
+    private EditText edtCccd, edtName, edtGender, edtPhone;
+
+    public CustomerDetailFragment() {}
+
+    public static CustomerDetailFragment newInstance(String cccd, String name, String gender, String phone) {
         CustomerDetailFragment fragment = new CustomerDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_CCCD, cccd);
+        args.putString(ARG_NAME, name);
+        args.putString(ARG_GENDER, gender);
+        args.putString(ARG_PHONE, phone);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,15 +52,110 @@ public class CustomerDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            cccd = getArguments().getString(ARG_CCCD);
+            name = getArguments().getString(ARG_NAME);
+            gender = getArguments().getString(ARG_GENDER);
+            phone = getArguments().getString(ARG_PHONE);
         }
+        repository = new FirebaseRepository<>("Customer", Customer.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_customer_detail, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_customer_detail, container, false);
+
+        edtCccd = view.findViewById(R.id.edtCusId2);
+        edtName = view.findViewById(R.id.edtCusName2);
+        edtGender = view.findViewById(R.id.edtCusGender2);
+        edtPhone = view.findViewById(R.id.edtCusPhone2);
+
+        // Set initial text values
+        edtCccd.setText(cccd);
+        edtName.setText(name);
+        edtGender.setText(gender);
+        edtPhone.setText(phone);
+
+
+
+        // Set up delete button functionality
+        Button btnDeleteCus2 = view.findViewById(R.id.btnDeleteCus2);
+        btnDeleteCus2.setOnClickListener(v -> confirmDeletion());
+
+        // Set up update button with confirmation dialog
+        Button btnUpdateInfoCus = view.findViewById(R.id.btnUpdateInfoCus);
+        btnUpdateInfoCus.setOnClickListener(v -> confirmEdit());
+
+        return view;
+    }
+
+    private void deleteCustomer() {
+        repository.delete(cccd, new FirebaseRepository.OnOperationListener() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().setFragmentResult("customerDeleted", new Bundle());
+                }
+                dismiss();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(getContext(), "Xoá thất bại: " + message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void confirmEdit() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Chỉnh sửa")
+                .setMessage("Bạn có chắc chắn muốn lưu các thay đổi?")
+                .setPositiveButton("Có", (dialog, which) -> saveChanges())
+                .setNegativeButton("Không", null)
+                .show();
+    }
+
+    private void confirmDeletion() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Xóa khách hàng")
+                .setMessage("Bạn có chắc chắn muốn xóa khách hàng này?")
+                .setPositiveButton("Có", (dialog, which) -> deleteCustomer())
+                .setNegativeButton("Không", null)
+                .show();
+    }
+
+    private void saveChanges() {
+        String updatedName = edtName.getText().toString().trim();
+        String updatedGender = edtGender.getText().toString().trim();
+        String updatedPhone = edtPhone.getText().toString().trim();
+        String updatedCccd = edtCccd.getText().toString().trim();
+
+        if (updatedName.isEmpty() || updatedGender.isEmpty() || updatedPhone.isEmpty() || updatedCccd.isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng điền tất cả các trường bắt buộc", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("name", updatedName);
+        updates.put("gender", updatedGender);
+        updates.put("phone", updatedPhone);
+        updates.put("cccd", updatedCccd);
+
+        repository.update(cccd, updates, new FirebaseRepository.OnOperationListener() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(getContext(), "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().setFragmentResult("customerUpdated", new Bundle());
+                }
+                dismiss();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(getContext(), "Cập nhật thất bại: " + message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

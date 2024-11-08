@@ -1,6 +1,5 @@
 package com.example.rentwise.Fragment;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,19 +13,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.example.rentwise.ModelData.Customer;
 import com.example.rentwise.ModelData.FirebaseRepository;
 import com.example.rentwise.ModelData.Transaction;
+import com.example.rentwise.ModelData.Motobike;
 import com.example.rentwise.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class TransactionDetailFragment extends BottomSheetDialogFragment {
+import java.util.HashMap;
+import java.util.Map;
 
+public class TransactionDetailFragment extends BottomSheetDialogFragment implements ChooseItemFragment.OnItemSelectedListener{
+
+    private static final String ARG_TRANSACTION_ID = "transactionId";
     private static final String ARG_ID_CUSTOMER = "idCustomer";
     private static final String ARG_ID_MOTOBIKE = "idMotobike";
     private static final String ARG_START_DAY = "startDay";
     private static final String ARG_END_DAY = "endDay";
     private static final String ARG_ZONE_RENT = "zoneRent";
 
+    private String transactionId;
     private String idCustomer;
     private String idMotobike;
     private String startDay;
@@ -34,15 +40,14 @@ public class TransactionDetailFragment extends BottomSheetDialogFragment {
     private String zoneRent;
 
     private FirebaseRepository<Transaction> transactionRepository;
-    private String transactionId;
+    private FirebaseRepository<Motobike> motobikeRepository;
+    private EditText edtCusId, edtVehId, edtTranStartDay, edtTranEndDay, edtTranZone;
 
-    public TransactionDetailFragment() {
-        // Required empty public constructor
-    }
 
-    public static TransactionDetailFragment newInstance(String idCustomer, String idMotobike, String startDay, String endDay, String zoneRent) {
+    public static TransactionDetailFragment newInstance(String transactionId, String idCustomer, String idMotobike, String startDay, String endDay, String zoneRent) {
         TransactionDetailFragment fragment = new TransactionDetailFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_TRANSACTION_ID, transactionId);
         args.putString(ARG_ID_CUSTOMER, idCustomer);
         args.putString(ARG_ID_MOTOBIKE, idMotobike);
         args.putString(ARG_START_DAY, startDay);
@@ -56,14 +61,15 @@ public class TransactionDetailFragment extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            transactionId = getArguments().getString(ARG_TRANSACTION_ID);
             idCustomer = getArguments().getString(ARG_ID_CUSTOMER);
             idMotobike = getArguments().getString(ARG_ID_MOTOBIKE);
             startDay = getArguments().getString(ARG_START_DAY);
             endDay = getArguments().getString(ARG_END_DAY);
             zoneRent = getArguments().getString(ARG_ZONE_RENT);
         }
-        transactionRepository = new FirebaseRepository<>("Transactions", Transaction.class);
-        transactionId = generateTransactionId(idCustomer, idMotobike);  // Example ID generation
+        transactionRepository = new FirebaseRepository<>("Transaction", Transaction.class);
+        motobikeRepository = new FirebaseRepository<>("Motobike", Motobike.class);
     }
 
     @Nullable
@@ -71,38 +77,93 @@ public class TransactionDetailFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transaction_detail, container, false);
 
-        // Setup EditTexts to display transaction details
-        EditText edtCusId = view.findViewById(R.id.edtCusId3);
-        EditText edtVehId = view.findViewById(R.id.edtVehId3);
-        EditText edtTranStartDay = view.findViewById(R.id.edtTranStartDay2);
-        EditText edtTranEndDay = view.findViewById(R.id.edtTranEndDay2);
-        EditText edtTranZone = view.findViewById(R.id.edtTranZone2);
+        // Initialize EditTexts
+        edtCusId = view.findViewById(R.id.edtCusId3);
+        edtVehId = view.findViewById(R.id.edtVehId3);
+        edtTranStartDay = view.findViewById(R.id.edtTranStartDay2);
+        edtTranEndDay = view.findViewById(R.id.edtTranEndDay2);
+        edtTranZone = view.findViewById(R.id.edtTranZone2);
 
+        // Set initial text values
         edtCusId.setText(idCustomer);
         edtVehId.setText(idMotobike);
         edtTranStartDay.setText(startDay);
         edtTranEndDay.setText(endDay);
         edtTranZone.setText(zoneRent);
 
-        // Make EditTexts non-editable
-        setNonEditable(edtCusId, edtVehId, edtTranStartDay, edtTranEndDay, edtTranZone);
+        // Set click listeners to open ChooseItemFragment for selection
+        edtCusId.setOnClickListener(v -> openChooseItemFragment(ChooseItemFragment.TYPE_CUSTOMER));
+        edtVehId.setOnClickListener(v -> openChooseItemFragment(ChooseItemFragment.TYPE_VEHICLE));
 
-        // Setup Delete Button
+        // Setup buttons
         Button btnDeleteTransaction = view.findViewById(R.id.btnDeleteTransaction);
         btnDeleteTransaction.setOnClickListener(v -> confirmDeletion());
 
-        // Setup Save Button
         Button btnSaveEdit = view.findViewById(R.id.btnSaveEdit);
-        btnSaveEdit.setOnClickListener(v -> saveTransactionDetails());
+        btnSaveEdit.setOnClickListener(v -> confirmEdit());
 
         return view;
     }
 
-    private void setNonEditable(EditText... editTexts) {
-        for (EditText editText : editTexts) {
-            editText.setFocusable(false);
-            editText.setClickable(false);
+    private void openChooseItemFragment(String type) {
+        ChooseItemFragment chooseItemFragment = ChooseItemFragment.newInstance(type);
+        chooseItemFragment.setTargetFragment(this, 0); // Set this fragment as the target
+        chooseItemFragment.show(getParentFragmentManager(), "ChooseItemFragment");
+    }
+
+    @Override
+    public void onItemSelected(Object selectedItem) {
+        // Check the type of the selected item and update the corresponding field
+        if (selectedItem instanceof Customer) {
+            Customer customer = (Customer) selectedItem;
+            edtCusId.setText(customer.getCccd()); // Update customer ID field
+        } else if (selectedItem instanceof Motobike) {
+            Motobike motobike = (Motobike) selectedItem;
+            edtVehId.setText(motobike.getNumberPlate()); // Update vehicle ID field
         }
+    }
+
+    private void confirmEdit() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Chỉnh sửa")
+                .setMessage("Bạn có chắc chắn muốn lưu các thay đổi?")
+                .setPositiveButton("Có", (dialog, which) -> saveTransactionChanges())
+                .setNegativeButton("Không", null)
+                .show();
+    }
+
+    private void saveTransactionChanges() {
+        // Collect updated data from EditText fields
+        String updatedCustomerID = edtCusId.getText().toString().trim();
+        String updatedVehicleID = edtVehId.getText().toString().trim();
+        String updatedStartDay = edtTranStartDay.getText().toString().trim();
+        String updatedEndDay = edtTranEndDay.getText().toString().trim();
+        String updatedZone = edtTranZone.getText().toString().trim();
+
+        // Prepare a map with the updated values
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("idCustomer", updatedCustomerID);
+        updates.put("idMotobike", updatedVehicleID);
+        updates.put("startDay", updatedStartDay);
+        updates.put("endDay", updatedEndDay);
+        updates.put("zoneRent", updatedZone);
+
+        // Update in Firebase
+        transactionRepository.update(transactionId, updates, new FirebaseRepository.OnOperationListener() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(getContext(), "Cập nhật giao dịch thành công!", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().setFragmentResult("transactionUpdated", new Bundle());
+                }
+                dismiss();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(getContext(), "Cập nhật giao dịch thất bại: " + message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void confirmDeletion() {
@@ -115,10 +176,16 @@ public class TransactionDetailFragment extends BottomSheetDialogFragment {
     }
 
     private void deleteTransaction() {
+        if (transactionId == null || transactionId.isEmpty()) {
+            Toast.makeText(getContext(), "Transaction ID is missing.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         transactionRepository.delete(transactionId, new FirebaseRepository.OnOperationListener() {
             @Override
             public void onSuccess(String message) {
                 Toast.makeText(getContext(), "Giao dịch đã được xóa", Toast.LENGTH_SHORT).show();
+                updateVehicleStatusToOffline(idMotobike);
                 if (getActivity() != null) {
                     getActivity().getSupportFragmentManager().setFragmentResult("transactionUpdated", new Bundle());
                     getActivity().getSupportFragmentManager().popBackStack();
@@ -132,19 +199,20 @@ public class TransactionDetailFragment extends BottomSheetDialogFragment {
         });
     }
 
-    private void saveTransactionDetails() {
-        // Here, you would handle saving any edited transaction details
-        // For simplicity, we’ll just display a message.
-        Toast.makeText(getContext(), "Lưu thành công!", Toast.LENGTH_SHORT).show();
+    private void updateVehicleStatusToOffline(String vehicleID) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("status", "offline");
 
-        if (getActivity() != null) {
-            getActivity().getSupportFragmentManager().setFragmentResult("transactionUpdated", new Bundle());
-            getActivity().getSupportFragmentManager().popBackStack();
-        }
-    }
+        motobikeRepository.update(vehicleID, updates, new FirebaseRepository.OnOperationListener() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(getActivity(), "Cập nhật trạng thái xe thành công!", Toast.LENGTH_SHORT).show();
+            }
 
-    // Example transaction ID generation method
-    private String generateTransactionId(String idCustomer, String idMotobike) {
-        return idCustomer + "_" + idMotobike;  // Customize this based on your data structure
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(getActivity(), "Không thể cập nhật trạng thái xe: " + message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

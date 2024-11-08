@@ -88,7 +88,7 @@ public class VehicleDetailFragment extends BottomSheetDialogFragment {
 
         // Set up delete button functionality
         Button btnDelete = view.findViewById(R.id.btnDelete2);
-        btnDelete.setOnClickListener(v -> deleteVehicle());
+        btnDelete.setOnClickListener(v -> confirmDeletion());
 
         // Set up update button with confirmation dialog
         Button btnUpdateInfo = view.findViewById(R.id.btnUpdateInfo);
@@ -121,6 +121,15 @@ public class VehicleDetailFragment extends BottomSheetDialogFragment {
                 .setTitle("Chỉnh sửa")
                 .setMessage("Bạn có chắc chắn muốn lưu các thay đổi?")
                 .setPositiveButton("Có", (dialog, which) -> saveChanges())
+                .setNegativeButton("Không", null)
+                .show();
+    }
+
+    private void confirmDeletion() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Xóa thông tin xe")
+                .setMessage("Bạn có chắc chắn muốn xóa dữ liệu xe này?")
+                .setPositiveButton("Có", (dialog, which) -> deleteVehicle())
                 .setNegativeButton("Không", null)
                 .show();
     }

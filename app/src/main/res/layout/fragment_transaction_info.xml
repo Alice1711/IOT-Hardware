@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:id="@+id/btnBackCustomerInfo"
+                android:id="@+id/btnBackTranInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -258,7 +258,7 @@
             </ScrollView>
 
             <Button
-                android:id="@+id/btnSave2"
+                android:id="@+id/btnSaveTran"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="16dp"

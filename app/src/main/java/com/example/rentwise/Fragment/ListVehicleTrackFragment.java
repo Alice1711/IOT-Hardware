@@ -29,7 +29,7 @@ import java.util.List;
 import kotlin.Triple;
 
 public class ListVehicleTrackFragment extends BottomSheetDialogFragment {
-    
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -212,9 +212,8 @@ public class ListVehicleTrackFragment extends BottomSheetDialogFragment {
                 ImageView imgStatusOn = itemView.findViewById(R.id.imgStatusOn);
 
                 nameCustomer.setText(customer.getName());
-                tvStatusOn.setText(transaction.getZoneRent());
-                String location = gps.getLatitude() + ", " + gps.getLongtitude();
-                locationCustomer.setText(location);
+                tvStatusOn.setText(motobike.getNumberPlate());
+                locationCustomer.setText(transaction.getZoneRent());
                 imgVehicle.setImageResource(R.drawable.nvx_gray_green);
 
                 if ("Online".equalsIgnoreCase(motobike.getStatus())) {
@@ -228,10 +227,10 @@ public class ListVehicleTrackFragment extends BottomSheetDialogFragment {
                         try {
 
                             double latitude = Double.parseDouble(gps.getLatitude());
-                            double longitude = Double.parseDouble(gps.getLongtitude());
+                            double longitude = Double.parseDouble(gps.getLongitude());
                             listener.onVehicleItemClick(latitude, longitude);
                         } catch (NumberFormatException e) {
-                            Log.e("ListVehicleTrackFragment", "Invalid GPS coordinates: " + gps.getLatitude() + ", " + gps.getLongtitude());
+                            Log.e("ListVehicleTrackFragment", "Invalid GPS coordinates: " + gps.getLatitude() + ", " + gps.getLongitude());
                         }
                     }
                 });

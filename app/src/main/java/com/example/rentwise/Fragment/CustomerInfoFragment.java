@@ -17,21 +17,21 @@ import com.example.rentwise.ModelData.Customer;
 import com.example.rentwise.ModelData.FirebaseRepository;
 import com.example.rentwise.R;
 
-public class CustomerInfoFragmentFragment extends Fragment {
+public class CustomerInfoFragment extends Fragment {
 
     private EditText edtCusId, edtCusName, edtCusGender, edtCusPhone;
     private Button btnSave2;
 
-    public CustomerInfoFragmentFragment() {}
+    public CustomerInfoFragment() {}
 
-    public static CustomerInfoFragmentFragment newInstance() {
-        return new CustomerInfoFragmentFragment();
+    public static CustomerInfoFragment newInstance() {
+        return new CustomerInfoFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_customer_info_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_customer_info, container, false);
 
         // Initialize EditText and Button fields
         edtCusId = view.findViewById(R.id.edtCusId);
@@ -78,6 +78,11 @@ public class CustomerInfoFragmentFragment extends Fragment {
                 Toast.makeText(getActivity(), "Thêm khách hàng thành công!", Toast.LENGTH_SHORT).show();
                 clearFields();
 
+                // Notify ManageCustomer to reload data
+                Bundle result = new Bundle();
+                result.putBoolean("dataUpdated", true);
+                getParentFragmentManager().setFragmentResult("requestKey", result);
+
                 // Optionally go back to the previous screen
                 if (getActivity() != null) {
                     getActivity().getSupportFragmentManager().popBackStack();
@@ -91,7 +96,6 @@ public class CustomerInfoFragmentFragment extends Fragment {
         });
     }
 
-    // Clear input fields after saving
     private void clearFields() {
         edtCusId.setText("");
         edtCusName.setText("");

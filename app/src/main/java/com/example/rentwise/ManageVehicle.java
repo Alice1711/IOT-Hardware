@@ -106,10 +106,10 @@ public class ManageVehicle extends AppCompatActivity {
 
                 if ("Online".equalsIgnoreCase(motobike.getStatus())) {
                     statusIcon.setImageResource(R.drawable.img_status_online);
-                    locationCustomerTextView.setText("Trạng thái: đang hoạt động");
+                    locationCustomerTextView.setText("Trạng thái: đang cho thuê");
                 } else {
                     statusIcon.setImageResource(R.drawable.img_status_offline);
-                    locationCustomerTextView.setText("Trạng thái: không hoạt động");
+                    locationCustomerTextView.setText("Trạng thái: có sẵn");
                 }
 
                 itemView.setOnClickListener(v -> openVehicleDetailFragment(motobike));
