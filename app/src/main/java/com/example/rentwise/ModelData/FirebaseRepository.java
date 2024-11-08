@@ -22,6 +22,10 @@ public class FirebaseRepository<T> {
         this.modelClass = modelClass;
     }
 
+    public DatabaseReference getReference() {
+        return reference;
+    }
+
     public void save(String key, T data, OnOperationListener listener) {
         reference.child(key).setValue(data).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -80,6 +84,10 @@ public class FirebaseRepository<T> {
                 listener.onFailure("Không thể xóa dữ liệu.");
             }
         });
+    }
+
+    public String getNewKey() {
+        return reference.push().getKey();
     }
 
     public void getAll(OnFetchListListener<T> listener) {

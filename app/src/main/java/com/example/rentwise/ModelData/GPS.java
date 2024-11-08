@@ -2,25 +2,25 @@ package com.example.rentwise.ModelData;
 
 public class GPS {
 
-    private String idVehivcle;
+    private String idVehicle;
     private String latitude;
-    private String longtitude;
+    private String longitude;
 
     public GPS() {
     }
 
-    public GPS(String idVehivcle, String latitude, String longtitude) {
-        this.idVehivcle = idVehivcle;
+    public GPS(String idVehicle, String latitude, String longitude) {
+        this.idVehicle = idVehicle;
         this.latitude = latitude;
-        this.longtitude = longtitude;
+        this.longitude = longitude;
     }
 
-    public String getIdVehivcle() {
-        return idVehivcle;
+    public String getIdVehicle() {
+        return idVehicle;
     }
 
-    public void setIdVehivcle(String idVehivcle) {
-        this.idVehivcle = idVehivcle;
+    public void setIdVehicle(String idVehicle) {
+        this.idVehicle = idVehicle;
     }
 
     public String getLatitude() {
@@ -31,11 +31,11 @@ public class GPS {
         this.latitude = latitude;
     }
 
-    public String getLongtitude() {
-        return longtitude;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(String longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

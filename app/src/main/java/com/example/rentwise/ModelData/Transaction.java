@@ -1,5 +1,6 @@
 package com.example.rentwise.ModelData;
 
+import com.google.firebase.database.Exclude;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,10 +73,12 @@ public class Transaction {
         this.zoneRent = zoneRent;
     }
 
+    @Exclude
     public Date getStartDayAsDate() throws ParseException {
         return new SimpleDateFormat("dd/MM/yyyy").parse(this.startDay);
     }
 
+    @Exclude
     public Date getEndDayAsDate() throws ParseException {
         return new SimpleDateFormat("dd/MM/yyyy").parse(this.endDay);
     }

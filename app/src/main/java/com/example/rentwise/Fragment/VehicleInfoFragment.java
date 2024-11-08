@@ -1,66 +1,97 @@
 package com.example.rentwise.Fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
+
+import com.example.rentwise.ModelData.FirebaseRepository;
+import com.example.rentwise.ModelData.Motobike;
 import com.example.rentwise.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link VehicleInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class VehicleInfoFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EditText edtNumPlate, edtVehicleName, edtPrice, edtPicture;
+    private Button btnAdd3;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public VehicleInfoFragment() {}
 
-    public VehicleInfoFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment VehicleInfoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static VehicleInfoFragment newInstance(String param1, String param2) {
-        VehicleInfoFragment fragment = new VehicleInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static VehicleInfoFragment newInstance() {
+        return new VehicleInfoFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_vehicle_info, container, false);
+
+        edtNumPlate = view.findViewById(R.id.edtNumPlate);
+        edtVehicleName = view.findViewById(R.id.edtVehicleName);
+        edtPrice = view.findViewById(R.id.edtPrice);
+        edtPicture = view.findViewById(R.id.edtPicture);
+
+        ImageButton btnBackVehicleInfo = view.findViewById(R.id.btnBackVehicleInfo);
+        btnBackVehicleInfo.setOnClickListener(v -> {
+            if (getActivity() != null && getActivity().getSupportFragmentManager() != null) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        btnAdd3 = view.findViewById(R.id.btnAdd3);
+        btnAdd3.setOnClickListener(v -> addVehicleToFirebase());
+
+        return view;
+    }
+
+    private void addVehicleToFirebase() {
+        String numberPlate = edtNumPlate.getText().toString().trim();
+        String name = edtVehicleName.getText().toString().trim();
+        String price = edtPrice.getText().toString().trim();
+        String picture = edtPicture.getText().toString().trim();
+        String status = "Offline";
+
+        if (numberPlate.isEmpty() || name.isEmpty() || price.isEmpty()) {
+            Toast.makeText(getActivity(), "Vui lòng điền tất cả các trường", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        Motobike motobike = new Motobike(name, numberPlate, picture, status, price);
+
+        FirebaseRepository<Motobike> repository = new FirebaseRepository<>("Motobike", Motobike.class);
+        repository.save(numberPlate, motobike, new FirebaseRepository.OnOperationListener() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(getActivity(), "Thêm xe thành công!", Toast.LENGTH_SHORT).show();
+                clearFields();
+
+                // Notify ManageVehicle to reload data
+                Bundle result = new Bundle();
+                result.putBoolean("dataUpdated", true);
+                getParentFragmentManager().setFragmentResult("requestKey", result);
+
+                // Optionally go back to ManageVehicle
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(getActivity(), "Không thể thêm xe: " + message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vehicle_info, container, false);
+    private void clearFields() {
+        edtNumPlate.setText("");
+        edtVehicleName.setText("");
+        edtPrice.setText("");
+        edtPicture.setText("");
     }
 }

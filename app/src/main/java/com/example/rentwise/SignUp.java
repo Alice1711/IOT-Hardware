@@ -2,94 +2,131 @@ package com.example.rentwise;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.rentwise.ModelData.Adnim;
+import com.example.rentwise.ModelData.FirebaseRepository;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.auth.FirebaseUser;
 
 public class SignUp extends AppCompatActivity {
 
-    TextView tvLogin;
-    Button btnSignIn;
-    TextInputEditText edtEmail2, edtPass2, edtRePass2;
+    private TextInputEditText edtEmail, edtPass, edtRePass;
+    private TextInputLayout layoutEmail, layoutPass, layoutRePass;
     private FirebaseAuth mAuth;
+    private Button btnSignUp;
+    private TextView tvLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_up);
 
-        tvLogin = findViewById(R.id.tvLogin);
-        btnSignIn = findViewById(R.id.btnSignIn);
-        edtEmail2 = findViewById(R.id.edtEmail2);
-        edtPass2 = findViewById(R.id.edtPass2);
-        edtRePass2 = findViewById(R.id.edtRePass2);
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        tvLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SignUp.this, Login.class);
-                startActivity(intent);
-            }
+        // Get references to UI elements
+        edtEmail = findViewById(R.id.edtEmail2);
+        edtPass = findViewById(R.id.edtPass2);
+        edtRePass = findViewById(R.id.edtRePass2);
+        layoutEmail = findViewById(R.id.layoutEmail2);
+        layoutPass = findViewById(R.id.layoutPass2);
+        layoutRePass = findViewById(R.id.layoutRePass2);
+        btnSignUp = findViewById(R.id.btnSignIn);
+        tvLogin = findViewById(R.id.tvLogin);
+
+        // Redirect to login activity if the user already has an account
+        tvLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(SignUp.this, Login.class);
+            startActivity(intent);
         });
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+
+        // Register click listener for sign-up button
+        btnSignUp.setOnClickListener(v -> registerUser());
+    }
+
+    private void registerUser() {
+        String email = edtEmail.getText().toString().trim();
+        String password = edtPass.getText().toString().trim();
+        String confirmPassword = edtRePass.getText().toString().trim();
+
+        if (!validateInput(email, password, confirmPassword)) {
+            return;
+        }
+
+        // Create a new user with Firebase Authentication
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            saveUserToDatabase(user);
+                            navigateToHome();
+                        }
+                    } else {
+                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Đăng ký thất bại.";
+                        Toast.makeText(SignUp.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private boolean validateInput(String email, String password, String confirmPassword) {
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            layoutEmail.setError("Vui lòng nhập email hợp lệ.");
+            return false;
+        } else {
+            layoutEmail.setError(null);
+        }
+
+        if (password.isEmpty() || password.length() < 6) {
+            layoutPass.setError("Mật khẩu phải có ít nhất 6 ký tự.");
+            return false;
+        } else {
+            layoutPass.setError(null);
+        }
+
+        if (!password.equals(confirmPassword)) {
+            layoutRePass.setError("Mật khẩu nhập lại không khớp.");
+            return false;
+        } else {
+            layoutRePass.setError(null);
+        }
+        return true;
+    }
+
+    private void saveUserToDatabase(FirebaseUser firebaseUser) {
+        String userId = firebaseUser.getUid();
+        String email = firebaseUser.getEmail();
+
+        // Assuming Adnim is your model for user data
+        Adnim user = new Adnim(email, edtPass.getText().toString().trim());
+
+        FirebaseRepository<Adnim> repository = new FirebaseRepository<>("Admin", Adnim.class);
+        repository.save(userId, user, new FirebaseRepository.OnOperationListener() {
             @Override
-            public void onClick(View v) {
-                signUp();
+            public void onSuccess(String message) {
+                Toast.makeText(SignUp.this, "Đăng ký thành công.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(SignUp.this, "Lưu dữ liệu thất bại: " + message, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void signUp() {
-        String email = edtEmail2.getText().toString();
-        String pass = edtPass2.getText().toString();
-        String rePass = edtRePass2.getText().toString();
-
-        if (email.isEmpty()) {
-            edtEmail2.setError("Email is required");
-            return;
-        }
-        if (pass.isEmpty()) {
-            edtPass2.setError("Password is required");
-            return;
-        }
-        if (rePass.isEmpty()) {
-            edtRePass2.setError("Re-Password is required");
-            return;
-        }
-
-        if (!pass.equals(rePass)) {
-            edtRePass2.setError("Passwords do not match");
-            return;
-        }
-
-        mAuth.createUserWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SignUp.this, "Sign Up Success", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SignUp.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            String errorMessage = task.getException() != null ? task.getException().getMessage() : "Sign Up Failed";
-                            Toast.makeText(SignUp.this, errorMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    private void navigateToHome() {
+        Toast.makeText(SignUp.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(SignUp.this, Login.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -10,11 +10,11 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String cccd, String phoneNumber, String name, String gender) {
+    public Customer(String cccd, String name, String gender, String phoneNumber) {
         this.cccd = cccd;
-        this.phoneNumber = phoneNumber;
         this.name = name;
         this.gender = gender;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getCccd() {

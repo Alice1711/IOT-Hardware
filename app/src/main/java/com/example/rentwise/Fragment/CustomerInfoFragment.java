@@ -1,66 +1,105 @@
 package com.example.rentwise.Fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.rentwise.ModelData.Customer;
+import com.example.rentwise.ModelData.FirebaseRepository;
 import com.example.rentwise.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CustomerInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CustomerInfoFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EditText edtCusId, edtCusName, edtCusGender, edtCusPhone;
+    private Button btnSave2;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public CustomerInfoFragment() {}
 
-    public CustomerInfoFragment() {
-        // Required empty public constructor
+    public static CustomerInfoFragment newInstance() {
+        return new CustomerInfoFragment();
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CustomerInfoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CustomerInfoFragment newInstance(String param1, String param2) {
-        CustomerInfoFragment fragment = new CustomerInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_customer_info, container, false);
+
+        // Initialize EditText and Button fields
+        edtCusId = view.findViewById(R.id.edtCusId);
+        edtCusName = view.findViewById(R.id.edtCusName);
+        edtCusGender = view.findViewById(R.id.edtCusGender);
+        edtCusPhone = view.findViewById(R.id.edtCusPhone);
+        btnSave2 = view.findViewById(R.id.btnSave2);
+
+        // Back button functionality
+        ImageButton btnBackCustomerInfo = view.findViewById(R.id.btnBackCustomerInfo);
+        btnBackCustomerInfo.setOnClickListener(v -> {
+            if (getActivity() != null && getActivity().getSupportFragmentManager() != null) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        // Save button functionality
+        btnSave2.setOnClickListener(v -> addCustomerToFirebase());
+
+        return view;
+    }
+
+    private void addCustomerToFirebase() {
+        // Retrieve data from input fields
+        String customerId = edtCusId.getText().toString().trim();
+        String customerName = edtCusName.getText().toString().trim();
+        String customerGender = edtCusGender.getText().toString().trim();
+        String customerPhone = edtCusPhone.getText().toString().trim();
+
+        // Check for required fields
+        if (customerId.isEmpty() || customerName.isEmpty() || customerGender.isEmpty() || customerPhone.isEmpty()) {
+            Toast.makeText(getActivity(), "Vui lòng điền tất cả các trường", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Create a Customer object
+        Customer customer = new Customer(customerId, customerName, customerGender, customerPhone);
+
+        // Save to Firebase
+        FirebaseRepository<Customer> repository = new FirebaseRepository<>("Customer", Customer.class);
+        repository.save(customerId, customer, new FirebaseRepository.OnOperationListener() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(getActivity(), "Thêm khách hàng thành công!", Toast.LENGTH_SHORT).show();
+                clearFields();
+
+                // Notify ManageCustomer to reload data
+                Bundle result = new Bundle();
+                result.putBoolean("dataUpdated", true);
+                getParentFragmentManager().setFragmentResult("requestKey", result);
+
+                // Optionally go back to the previous screen
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(getActivity(), "Không thể thêm khách hàng: " + message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_customer_info, container, false);
+    private void clearFields() {
+        edtCusId.setText("");
+        edtCusName.setText("");
+        edtCusGender.setText("");
+        edtCusPhone.setText("");
     }
 }
