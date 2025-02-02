@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_setProfile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SetProfile">
+
+    <TextView
+        android:id="@+id/tvSetProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/rubik_extrabold"
+        android:gravity="left|center_vertical"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="Nhập thông tin"
+        android:textColor="#FF000000"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgSubtract3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/formSignUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|left"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="left|top"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgSubtract3">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Họ tên"
+            app:boxBackgroundColor="#FFFFFF"
+            app:hintTextColor="#32CD99"
+            app:startIconDrawable="@drawable/baseline_email_24"
+            app:startIconTint="#BDB9B9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtFullName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:fontFamily="@font/roboto"
+                android:inputType="text|textEmailAddress"
+                android:maxHeight="55dp"
+                android:minHeight="48dp"
+                android:paddingStart="45dp"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutGender"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:hint="Giới tính"
+            app:boxBackgroundColor="#FFFFFF"
+            app:hintTextColor="#32CD99"
+            app:startIconDrawable="@drawable/baseline_lock_24"
+            app:startIconTint="#BDB9B9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtGender"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:fontFamily="@font/roboto"
+                android:inputType="text|textPassword"
+                android:maxHeight="55dp"
+                android:minHeight="48dp"
+                android:paddingStart="45dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutBirthday"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:hint="Ngày sinh"
+            app:boxBackgroundColor="#FFFFFF"
+            app:hintTextColor="#32CD99"
+            app:startIconDrawable="@drawable/baseline_lock_reset_24"
+            app:startIconTint="#BDB9B9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:fontFamily="@font/roboto"
+                android:inputType="text|textPassword"
+                android:maxHeight="55dp"
+                android:minHeight="48dp"
+                android:paddingStart="45dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutNumPhone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:hint="Số điện thoại"
+            app:boxBackgroundColor="#FFFFFF"
+            app:hintTextColor="#32CD99"
+            app:startIconDrawable="@drawable/baseline_lock_reset_24"
+            app:startIconTint="#BDB9B9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtNumPhone"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:fontFamily="@font/roboto"
+                android:inputType="text|textPassword"
+                android:maxHeight="55dp"
+                android:minHeight="48dp"
+                android:paddingStart="45dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutEmail3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:hint="Email"
+            app:boxBackgroundColor="#FFFFFF"
+            app:hintTextColor="#32CD99"
+            app:startIconDrawable="@drawable/baseline_lock_reset_24"
+            app:startIconTint="#BDB9B9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtEmail3"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:fontFamily="@font/roboto"
+                android:inputType="text|textPassword"
+                android:maxHeight="55dp"
+                android:minHeight="48dp"
+                android:paddingStart="45dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutAddress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:hint="Địa chỉ"
+            app:boxBackgroundColor="#FFFFFF"
+            app:hintTextColor="#32CD99"
+            app:startIconDrawable="@drawable/baseline_lock_reset_24"
+            app:startIconTint="#BDB9B9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:fontFamily="@font/roboto"
+                android:inputType="text|textPassword"
+                android:maxHeight="55dp"
+                android:minHeight="48dp"
+                android:paddingStart="45dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnFinish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="51dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#000113"
+        android:shadowRadius="@dimen/material_emphasis_disabled_background"
+        android:text="Lưu"
+        android:textSize="18sp"
+        app:cornerRadius="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/formSignUp" />
+
+    <ImageView
+        android:id="@+id/imgSubtract3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|left"
+        android:background="@drawable/image_subtract"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/LogoSologan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/formSignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgLogo2"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="top|left"
+                android:scaleType="centerInside"
+                android:src="@drawable/image_app_logo" />
+
+            <LinearLayout
+                android:id="@+id/container_group6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top|left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvBrandName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lobster"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="RentWise"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="40dp" />
+
+                <TextView
+                    android:id="@+id/tvBrandSlogan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_medium"
+                    android:gravity="center_horizontal|top"
+                    android:includeFontPadding="false"
+                    android:lineHeight="18.15dp"
+                    android:text="Find Your Car"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

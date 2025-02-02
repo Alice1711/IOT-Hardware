@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.ListTrackingFragment">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/frame_bottomDialog"
+        android:layout_width="match_parent"
+        android:layout_height="370dp"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:background="@drawable/rectangle_white"/> <!-- Set visibility to gone initially -->
+
+    <ImageButton
+        android:id="@+id/showBottomSheetButton"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center|right"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/round_white"
+        android:backgroundTint="@color/white"
+        android:elevation="2dp"
+        android:padding="2dp"
+        android:src="@drawable/baseline_location_searching_24" />
+
+    <ImageButton
+        android:id="@+id/btnDirection"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="180dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/round_white"
+        android:elevation="2dp"
+        android:padding="5dp"
+        android:src="@drawable/baseline_my_location_24" />
+
+</FrameLayout>
